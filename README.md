@@ -21,4 +21,5 @@ then it retuns error, url, publicID
 ### Cloudinary deleteImg
 In this, you will parse the publicId and either get error or deleted in return.
 
-### 
+### Cloudinary bulk deleteImg
+you will parse an array of publicID
