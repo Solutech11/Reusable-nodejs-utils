@@ -6,7 +6,9 @@ this is used for errors validation with mongodb and others
 
 ## Cloudinary
 This is for uploading files to your cloudinary
+
 Go to .env file and add
+
         cloud_name='***'
         api_key='***'
         api_secret='***'
