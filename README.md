@@ -50,7 +50,32 @@ It returns either
                 error:Error/null
         }
 
+3. Create Session DB
+   
+           const mongoose = require('mongoose');
 
+        const Schema = mongoose.Schema
+
+        // create this dm
+        const SessionModel = new Schema({
+            //major user id will be pared here
+            UserId:{
+        type:String,
+        required:[true, "UserID is Required"],
+        unique:true
+            },
+
+            //when data expires
+            expireAt:{
+        type:Date,
+        default:new Date(new Date().getTime()+2880*60000),
+        // expires:'40320m'
+            },
+    
+        },{timestamps:true})
+
+        module.exports = mongoose.model('SessionModel', SessionModel)
+   
 ## Cloudinary
 This is for uploading files to your cloudinary
 
