@@ -1,5 +1,6 @@
 const SessionModel = require("../Model/Session.model");// session models go here
 const UserModel = require("../Model/User.model");// user model goes here
+const jwt = require("jsonwebtoken");
 
 function Errordisplay(error) {
     console.log(error.message);// can be removed
@@ -44,4 +45,34 @@ async function SessionAuth(ID,userID){
         return {error:Errordisplay(error).msg}
     }
 }
-module.exports= {Errordisplay, SessionAuth}
+
+
+
+/////////////////////Jwt
+
+async function CreateToken(_id) {
+    try {
+        return jwt.sign({_id},process.env.jwtSecret,{expiresIn:'30d'})
+    } catch (error) {
+        throw error
+    }
+}
+
+function VerifyToken(req, res, next) {
+    const token = req.headers.authorization;
+  
+    if (!token) {
+      return res.status(500).json({ Error: 'User Does Not Exist' });
+    }
+  
+    jwt.verify(token, 'your-secret-key', (err, decoded) => {
+      if (err) {
+        return res.status(500).json({ Error: 'User Does Not Exist' });
+      }
+      req.user = decoded._id;
+      next();
+    });
+  }
+
+
+module.exports= {Errordisplay, SessionAuth,CreateToken, VerifyToken}
