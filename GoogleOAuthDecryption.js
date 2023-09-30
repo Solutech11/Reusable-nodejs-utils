@@ -6,7 +6,7 @@ const client = new OAuth2Client({
   clientSecret: process.env.GoogleClientSecret,
 });
 
-async function verifyIdToken(idToken) {
+async function verifyGoogleToken(idToken) {
   try {
     // Verify the ID token using the OAuth2Client instance
     const ticket = await client.verifyIdToken({
@@ -37,5 +37,5 @@ async function verifyIdToken(idToken) {
   }
 }
 
-module.exports=verifyIdToken
+module.exports=verifyGoogleToken
 
