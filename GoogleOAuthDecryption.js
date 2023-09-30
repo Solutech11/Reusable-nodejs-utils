@@ -33,17 +33,9 @@ async function verifyIdToken(idToken) {
     };
   } catch (error) {
     console.error('Error verifying ID token:', error);
-    throw error;
+    return {Error:true}
   }
 }
 
-// Call the function to verify and decrypt the ID token
-verifyIdToken(idToken)
-  .then(userDetails => {
-    // Use the user details as needed, including the profile image URL
-    console.log('User Details:', userDetails);
-  })
-  .catch(error => {
-    // Handle errors
-    console.error('Error:', error);
-  });
+module.exports=verifyIdToken
+
