@@ -50,22 +50,22 @@ async function SessionAuth(ID,userID){
 
 /////////////////////Jwt
 
-async function CreateToken(_id) {
+async function CreateJWTToken(_id) {
     try {
-        return jwt.sign({_id},process.env.jwtSecret,{expiresIn:'30d'})
+        return await jwt.sign({_id},process.env.jwtSecret,{expiresIn:'30d'})
     } catch (error) {
         throw error
     }
 }
 
-function VerifyToken(req, res, next) {
+function VerifyJWTToken(req, res, next) {
     const token = req.headers.authorization;
   
     if (!token) {
       return res.status(500).json({ Error: 'User Does Not Exist' });
     }
   
-    jwt.verify(token, 'your-secret-key', (err, decoded) => {
+    jwt.verify(token, process.env.jwtSecret, (err, decoded) => {
       if (err) {
         return res.status(500).json({ Error: 'User Does Not Exist' });
       }
@@ -75,4 +75,4 @@ function VerifyToken(req, res, next) {
   }
 
 
-module.exports= {Errordisplay, SessionAuth,CreateToken, VerifyToken}
+module.exports= {Errordisplay, SessionAuth,CreateJWTToken, VerifyJWTToken}
