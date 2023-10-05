@@ -46,6 +46,35 @@ async function SessionAuth(ID,userID){
     }
 }
 
+// call it before you call the callback to your router 
+// auth is passed to authorization headers
+async function SessionAuthMiddleWare(req,res, next){
+    try {
+
+        //get Auth token
+        let ID = req.header.authorization 
+
+        if(ID){
+            //checksID in DB
+            let ValidID= ID.length==24?await SessionModel.findOne({_id:ID}):null
+            
+            // checks user detail
+            let user= ValidID?await UserModel.findOne({_id:ValidID.UserId}):null
+            
+            //if data exist it pushes it out else NoAccess=true
+            req.user=user
+
+            return next()
+        }
+
+        //no auth
+        return res.status(500).json({Access:false, Error:"Dev only:No Auth"})
+
+    } catch (error) {
+        res.status(500).json({Access:false, Error:"Dev only:Auth doesnt exist"})
+    }
+}
+
 
 
 /////////////////////Jwt
@@ -75,4 +104,4 @@ function VerifyJWTToken(req, res, next) {
   }
 
 
-module.exports= {Errordisplay, SessionAuth,CreateJWTToken, VerifyJWTToken}
+module.exports= {Errordisplay, SessionAuth,SessionAuthMiddleWare, CreateJWTToken, VerifyJWTToken}
