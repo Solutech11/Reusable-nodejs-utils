@@ -28,4 +28,33 @@ async function Sendmail(to, subject, html) {
     }
 }
 
-module.exports={Sendmail}
+//expo notification
+async function SendExpoNotification(expoPushToken, title, body,priority) {
+  try {
+    const message = {
+      to: expoPushToken,
+      sound: 'default',
+      title,
+      body,
+      priority,
+      
+    };
+  
+    await axios({
+      url:'https://exp.host/--/api/v2/push/send', 
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify(message),
+    });
+        return {sent:true}
+  } catch (error) {
+      console.log(error.message);
+      return{error:error.message}
+  }
+}
+
+module.exports={Sendmail, SendExpoNotification}
