@@ -57,5 +57,31 @@ async function SendExpoNotification(expoPushToken, title, body,priority) {
       return{error:error.message}
   }
 }
+async function SendSMS(to, text){
+  try {
 
-module.exports={Sendmail, SendExpoNotification}
+    //integrating api
+    await axios({
+      url:'https://www.bulksmsnigeria.com/api/v2/sms',
+      method:'post',
+      headers:{
+        Accept:'application/json',
+        'Content-Type':'application/json'
+      },
+      data:JSON.stringify({
+        from:process.env.company,
+        to,
+        body:text,
+        api_token:process.env.bulkSMSApiKey
+      })
+    })
+
+    return{sent:true}
+    
+  } catch (error) {
+    console.log(error.response.data);
+
+    return {Error:error.response.data.data.message}
+  }
+}
+module.exports={Sendmail, SendExpoNotification, SendSMS}
