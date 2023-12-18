@@ -79,9 +79,9 @@ async function SessionAuthMiddleWare(req,res, next){
 
 /////////////////////Jwt
 
-async function CreateJWTToken(_id) {
+async function CreateJWTToken(payload) {
     try {
-        return await jwt.sign({_id},process.env.jwtSecret,{expiresIn:'30d'})
+        return await jwt.sign(payload,process.env.jwtSecret,{expiresIn:'30d'})
     } catch (error) {
         throw error
     }
@@ -98,10 +98,9 @@ function VerifyJWTToken(req, res, next) {
       if (err) {
         return res.status(500).json({ Error: 'User Does Not Exist' });
       }
-      req.user = decoded._id;
+      req.user = decoded;
       next();
     });
   }
-
 
 module.exports= {Errordisplay, SessionAuth,SessionAuthMiddleWare, CreateJWTToken, VerifyJWTToken}
