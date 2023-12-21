@@ -103,4 +103,20 @@ function VerifyJWTToken(req, res, next) {
     });
   }
 
-module.exports= {Errordisplay, SessionAuth,SessionAuthMiddleWare, CreateJWTToken, VerifyJWTToken}
+function VerifyWebJWTToken(req, res, next) {
+    const token = req.session.Auth;
+  
+    if (!token) {
+      return res.status(500).json({ Error: 'User Does Not Exist' });
+    }
+  
+    jwt.verify(token, process.env.jwtSecret, (err, decoded) => {
+      if (err) {
+        return res.status(500).json({ Error: 'User Does Not Exist' });
+      }
+      req.user = decoded;
+      next();
+    });
+}
+
+module.exports= {Errordisplay, SessionAuth,SessionAuthMiddleWare, CreateJWTToken, VerifyJWTToken,VerifyWebJWTToken}
